@@ -1,0 +1,44 @@
+---
+id: 0
+name: Testnet deployment
+network: testnet
+stacks-node: "https://stacks-node-api.testnet.stacks.co"
+bitcoin-node: "http://blockstack:blockstacksystem@bitcoind.testnet.stacks.co:18332"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - requirement-publish:
+            contract-id: SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait
+            remap-sender: ST1PGQQ8XJQN49454QPXXY8CX0MJ0708J9JFBQ4SG
+            remap-principals:
+              SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9: ST1PGQQ8XJQN49454QPXXY8CX0MJ0708J9JFBQ4SG
+            cost: 4680
+            path: "./.cache/requirements/SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.clar"
+            clarity-version: 1
+        - requirement-publish:
+            contract-id: SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard
+            remap-sender: ST1PGQQ8XJQN49454QPXXY8CX0MJ0708J9JFBQ4SG
+            remap-principals:
+              SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE: ST1PGQQ8XJQN49454QPXXY8CX0MJ0708J9JFBQ4SG
+            cost: 8400
+            path: "./.cache/requirements/SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.clar"
+            clarity-version: 1
+        - contract-publish:
+            contract-name: funny-dog
+            expected-sender: ST1PGQQ8XJQN49454QPXXY8CX0MJ0708J9JFBQ4SG
+            cost: 21550
+            path: contracts/funny-dog.clar
+            anchor-block-only: true
+            clarity-version: 1
+      epoch: "2.0"
+    - id: 1
+      transactions:
+        - contract-publish:
+            contract-name: nft-marketplace
+            expected-sender: ST1PGQQ8XJQN49454QPXXY8CX0MJ0708J9JFBQ4SG
+            cost: 94620
+            path: contracts/nft-marketplace.clar
+            anchor-block-only: true
+            clarity-version: 3
+      epoch: "3.0"
