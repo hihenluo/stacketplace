@@ -1,6 +1,6 @@
 import { openContractCall } from "@stacks/connect";
 import { uintCV, contractPrincipalCV } from "@stacks/transactions";
-import { StacksMainnet } from "@stacks/network";
+import { STACKS_MAINNET } from "@stacks/network"; // Fixed import
 
 interface MarketCardProps {
   listingId: number;
@@ -15,7 +15,8 @@ export const MarketCard = ({ listingId, tokenId, price }: MarketCardProps) => {
 
   const handleBuy = async () => {
     await openContractCall({
-      network: new StacksMainnet(),
+      // Use the imported constant directly
+      network: STACKS_MAINNET, 
       contractAddress: MARKET_ADDRESS,
       contractName: MARKET_NAME,
       functionName: "fulfil-listing-stx",
