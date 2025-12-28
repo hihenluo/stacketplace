@@ -1,75 +1,90 @@
-import React, { useState } from "react";
-import { ConnectWallet, userSession } from "./components/ConnectWallet";
-import { MintSection } from "./components/MintSection";
-import { MarketCard } from "./components/MarketCard";
+// src/App.tsx
+import { useState, useEffect } from 'react';
+import { connect, isConnected, disconnect, getLocalStorage } from '@stacks/connect';
+import { MintSection } from './components/MintSection';
+import { MarketCard } from './components/MarketCard';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<"mint" | "market">("mint");
+  const [stxAddress, setStxAddress] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'mint' | 'market'>('mint');
+
+  // Load address from local storage if already connected
+  useEffect(() => {
+    if (isConnected()) {
+      const userData = getLocalStorage() as any;
+      const addr = userData?.addresses?.stx?.[0]?.address || 
+                   userData?.addresses?.find?.((a: any) => a.symbol === 'STX')?.address;
+      if (addr) setStxAddress(addr);
+    }
+  }, []);
+
+  const handleConnect = async () => {
+    try {
+      if (isConnected()) {
+        disconnect();
+        setStxAddress(null);
+        return;
+      }
+
+      const response = await connect() as any;
+      const addr = response?.addresses?.stx?.[0]?.address || 
+                   response?.addresses?.find?.((a: any) => a.symbol === 'STX')?.address;
+      
+      if (addr) setStxAddress(addr);
+    } catch (error) {
+      console.error("Connection failed:", error);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      {/* Header */}
-      <nav className="p-6 bg-white border-b flex justify-between items-center sticky top-0 z-50">
-        <h1 className="text-3xl font-black tracking-tighter text-blue-600">DEDOLLZ</h1>
-        <ConnectWallet />
+    <div className="min-h-screen bg-slate-950 text-white font-sans">
+      {/* Navbar */}
+      <nav className="border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 bg-slate-950/90 backdrop-blur-sm z-50 px-6">
+        <h1 className="text-2xl font-black text-blue-500 tracking-tighter uppercase">Dedollz</h1>
+        <button 
+          onClick={handleConnect}
+          className="bg-blue-600 hover:bg-blue-500 text-sm py-2 px-6 rounded-full transition-all font-bold shadow-lg"
+        >
+          {stxAddress ? `${stxAddress.slice(0, 5)}...${stxAddress.slice(-4)}` : "Connect Wallet"}
+        </button>
       </nav>
 
-      {/* Hero Section */}
-      <header className="py-12 px-4 text-center bg-gradient-to-b from-blue-50 to-gray-50">
-        <h2 className="text-5xl font-extrabold mb-4">The Coolest Dollz on Stacks</h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto italic">
-          Total Supply: 1,000 | Contract: ...F4T
-        </p>
-      </header>
+      <main className="max-w-6xl mx-auto px-6 py-12 text-center">
+        {/* Tab Switcher */}
+        <div className="flex justify-center gap-8 mb-12">
+          <button 
+            onClick={() => setActiveTab('mint')}
+            className={`text-xl font-bold pb-2 ${activeTab === 'mint' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-slate-500'}`}
+          >
+            MINT
+          </button>
+          <button 
+            onClick={() => setActiveTab('market')}
+            className={`text-xl font-bold pb-2 ${activeTab === 'market' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-slate-500'}`}
+          >
+            MARKET
+          </button>
+        </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex justify-center gap-8 mb-12">
-        <button 
-          onClick={() => setActiveTab("mint")}
-          className={`pb-2 px-4 text-lg font-bold ${activeTab === "mint" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-400"}`}
-        >
-          MINTING
-        </button>
-        <button 
-          onClick={() => setActiveTab("market")}
-          className={`pb-2 px-4 text-lg font-bold ${activeTab === "market" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-400"}`}
-        >
-          MARKETPLACE
-        </button>
-      </div>
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 pb-20">
-        {!userSession.isUserSignedIn() ? (
-          <div className="text-center py-20 bg-white rounded-3xl shadow-sm border">
-            <h3 className="text-2xl font-bold">Please Connect Your Wallet</h3>
-            <p className="mt-2 text-gray-500">Access the Dedollz ecosystem via Stacks Mainnet.</p>
+        {!stxAddress ? (
+          <div className="py-20 bg-slate-900/50 rounded-3xl border border-slate-800">
+            <h2 className="text-3xl font-bold mb-4">Welcome to Dedollz</h2>
+            <p className="text-slate-400">Please connect your Stacks wallet to continue.</p>
           </div>
         ) : (
-          <div>
-            {activeTab === "mint" ? (
-              <div className="flex justify-center">
-                <MintSection />
-              </div>
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {activeTab === 'mint' ? (
+              <div className="flex justify-center"><MintSection stxAddress={stxAddress} /></div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Mock data for listing. In production, fetch this from Stacks API */}
-                <MarketCard listingId={1} tokenId={10} price={25} />
-                <MarketCard listingId={2} tokenId={45} price={50} />
-                <MarketCard listingId={3} tokenId={88} price={100} />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <MarketCard listingId={0} tokenId={1} price={10} />
+                <MarketCard listingId={1} tokenId={5} price={25} />
+                <MarketCard listingId={2} tokenId={12} price={50} />
               </div>
             )}
           </div>
         )}
       </main>
-      
-      {/* Screenshot Preview section as requested */}
-      <section className="max-w-4xl mx-auto mb-20 p-4 border-2 border-dashed rounded-lg bg-gray-100">
-          <p className="text-center text-gray-400 mb-2 font-mono uppercase text-sm">screenshot.png placeholder</p>
-          <div className="h-64 flex items-center justify-center">
-              <span className="text-gray-300 italic text-xl">The UI renders as a grid of high-fidelity NFT cards here</span>
-          </div>
-      </section>
     </div>
   );
 }
