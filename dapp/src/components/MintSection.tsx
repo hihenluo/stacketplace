@@ -4,34 +4,26 @@ import { principalCV } from '@stacks/transactions';
 
 export const MintSection = ({ stxAddress }: { stxAddress: string }) => {
   const handleMint = async () => {
-    try {
-      await request('stx_callContract', {
-        contract: 'SP32YN03PMDGXQA9HYEZS2WBAT32AZKDJTBAPF4T.dedollz',
-        functionName: 'mint',
-        functionArgs: [principalCV(stxAddress)],
-        network: 'mainnet',
-        postConditionMode: 'allow',
-      });
-      alert("Minting transaction sent!");
-    } catch (e) {
-      console.error(e);
-    }
+    await request('stx_callContract', {
+      contract: 'SP32YN03PMDGXQA9HYEZS2WBAT32AZKDJTBAPF4T.dedollz',
+      functionName: 'mint',
+      functionArgs: [principalCV(stxAddress)],
+      network: 'mainnet',
+      postConditionMode: 'allow',
+    });
   };
 
   return (
-    <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 max-w-sm w-full shadow-2xl">
-      <img 
-        src="https://ipfs.io/ipfs/QmXtnT5CeDYMyxovYRcQuM6xb6cubt8JUKh1xcyiSPYMkQ/0.json" 
-        alt="Preview" 
-        className="rounded-2xl mb-6 w-full aspect-square object-cover"
-      />
-      <h3 className="text-2xl font-bold mb-4">Dedollz NFT</h3>
-      <button 
-        onClick={handleMint}
-        className="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-xl font-black text-lg transition-transform active:scale-95 shadow-xl shadow-blue-900/20"
-      >
-        MINT NOW
-      </button>
+    <div className="relative group">
+      <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-500 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+      <div className="relative bg-[#121421] p-10 rounded-[2.5rem] border border-white/10 max-w-sm w-full shadow-2xl">
+        <img src="/0.png" alt="Dedollz Logo" className="rounded-3xl mb-8 w-full aspect-square object-cover shadow-2xl border border-white/5" />
+        <h3 className="text-3xl font-black mb-2 text-center">MINT DOLLZ</h3>
+        <p className="text-gray-500 text-sm text-center mb-8 uppercase tracking-widest font-bold">1,000 Limited Edition</p>
+        <button onClick={handleMint} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-black text-white transition-all transform hover:-translate-y-1 active:scale-95 shadow-xl shadow-blue-500/20">
+          CONFIRM MINT
+        </button>
+      </div>
     </div>
   );
 };
