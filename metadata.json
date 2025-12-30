@@ -1,0 +1,17 @@
+{
+  "title": "Dedollz NFT Marketplace",
+  "description": "A modern decentralized NFT application built on Stacks Mainnet, enabling users to mint, list, and trade Dedollz NFTs seamlessly using STX.",
+  "type": "dapp",
+  "framework": "clarity, react, vite, typescript, tailwindcss",
+  "useCase": "nft marketplace",
+  "complexity": "intermediate",
+  "pages": "https://stacketplace.pages.dev/",
+  "tags": [
+    "nft",
+    "marketplace",
+    "web3",
+    "smart-contract",
+    "stacks",
+    "clarity"
+  ]
+}
