@@ -1,4 +1,4 @@
-# 🧸 Dedollz NFT DApp
+# 🧸 Dedollz NFT & Marketplace
 
 A modern **decentralized NFT application** built on **Stacks Mainnet**, enabling users to **mint, list, and trade Dedollz NFTs** seamlessly using STX.
 
