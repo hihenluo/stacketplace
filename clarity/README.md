@@ -12,6 +12,7 @@ The [nft-marketplace.clar](/examples/nft-marketplace/contracts/nft-marketplace.c
 - `get-listing` function retrieves a listing by its ID
 - `cancel-listing` cancels a listing using an asset contract
 
+The [nft.clar](/examples/nft-marketplace/contracts/dedollz.clar) contract includes the following functionality.
 To add new contracts, follow detailed instructions at [Add new Contract](https://docs.hiro.so/clarinet/how-to-guides/how-to-add-contract).
 
 > **NOTE**: To use this example with Clarinet inside [Hiro Platform](https://platform.hiro.so), you can open the terminal session inside VS code by navigating to File -> View -> Terminal.
