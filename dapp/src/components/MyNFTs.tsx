@@ -42,7 +42,7 @@ export const MyNFTs = ({ stxAddress }: { stxAddress: string }) => {
         network: 'mainnet',
         postConditionMode: 'allow', // Allows the contract to take the NFT from your wallet
       });
-      alert("Listing broadcasted! Your NFT will move to escrow once confirmed.");
+      alert("Congrast Listing Succes! Your NFT will move to escrow once confirmed.");
     } catch (e) {
       console.error("Listing failed:", e);
       alert("Listing failed. Check console for details.");
